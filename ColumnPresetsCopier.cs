@@ -56,9 +56,18 @@ namespace FB.ColumnPresetsCopier
                 request.AddQueryParameter("fields", "user_settings");
                 var response = _restClient.Execute(request);
                 var usjson = (JObject)JsonConvert.DeserializeObject(response.Content);
+                var usid=usjson["user_settings"]["id"];
+                if (usid== null) //в этом акке еще не было пользовательских настроек  
+                {
+                    request = new RestRequest($"act_{a}/user_settings", Method.POST);
+                    request.AddQueryParameter("access_token", _accessToken);
+                    response = _restClient.Execute(request);
+                    usjson = (JObject)JsonConvert.DeserializeObject(response.Content);
+                    usid=usjson["id"];
+                }
                 foreach (var clmnPreset in json["user_settings"]["column_presets"]["data"])
                 {
-                    var req = new RestRequest($"{usjson["user_settings"]["id"]}/column_presets", Method.POST);
+                    var req = new RestRequest($"{usid}/column_presets", Method.POST);
                     req.AddParameter("access_token", _accessToken);
                     req.AddParameter("name", clmnPreset["name"]);
                     req.AddParameter("columns", clmnPreset["columns"]);

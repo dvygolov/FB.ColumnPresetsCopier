@@ -6,3 +6,6 @@
 /obj
 /bin/Debug/netcoreapp2.2
 /Properties/launchSettings.json
+/bin/Release/netcoreapp2.2
+/Properties/PublishProfiles
+/FB.ColumnPresetsCopier.csproj.user
