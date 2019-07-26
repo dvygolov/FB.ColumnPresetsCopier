@@ -56,8 +56,8 @@ namespace FB.ColumnPresetsCopier
             Console.WriteLine("Загрузка скачанных шаблонов отображения в рекламный кабинет с указанным ID:");
             Console.WriteLine("-u <ACCOUNT_ID>");
             Console.WriteLine("Примечание: при загрузке можно указать несколько ID кабинетов через запятую БЕЗ ПРОБЕЛА.");
-            //Console.WriteLine("Удаление всех автоправил в рекламном кабинете с указанным ID:");
-            //Console.WriteLine("-x <ACCOUNT_ID>");
+            Console.WriteLine("Удаление всех шаблонов в рекламном кабинете с указанным ID:");
+            Console.WriteLine("-x <ACCOUNT_ID>");
         }
     }
 }

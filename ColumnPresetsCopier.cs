@@ -56,14 +56,27 @@ namespace FB.ColumnPresetsCopier
                 request.AddQueryParameter("fields", "user_settings");
                 var response = _restClient.Execute(request);
                 var usjson = (JObject)JsonConvert.DeserializeObject(response.Content);
-                var usid=usjson["user_settings"]["id"];
-                if (usid== null) //в этом акке еще не было пользовательских настроек  
+                var usid = usjson["user_settings"]["id"];
+                if (usid != null) //в этом акке есть пользовательские настройки, вероятно стоит удалить?
+                {
+                    Console.Write($"Удалить все имеющиеся шаблоны в аккаунте {a}?(Y/N)");
+                    if (YesNoSelector.ReadAnswerEqualsYes())
+                    {
+                        var delRequest = new RestRequest($"{usid}/column_presets", Method.DELETE);
+                        delRequest.AddQueryParameter("access_token", _accessToken);
+                        var delResponse = _restClient.Execute(delRequest);
+                        var delJson = (JObject)JsonConvert.DeserializeObject(delResponse.Content);
+                        usid=null;
+                    }
+                }
+
+                if (usid == null) //в этом акке еще не было пользовательских настроек либо их только что удалили
                 {
                     request = new RestRequest($"act_{a}/user_settings", Method.POST);
                     request.AddQueryParameter("access_token", _accessToken);
                     response = _restClient.Execute(request);
                     usjson = (JObject)JsonConvert.DeserializeObject(response.Content);
-                    usid=usjson["id"];
+                    usid = usjson["id"];
                 }
                 foreach (var clmnPreset in json["user_settings"]["column_presets"]["data"])
                 {
